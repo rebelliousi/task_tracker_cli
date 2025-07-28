@@ -39,6 +39,23 @@ def list_tasks():
     for task in tasks:
         print(f"id:{task['id']},description:{task['description']},status:{task['status']},createdAt:{task['createdAt']},updatedAt:{task['updatedAt']}")
 
+def mark_task_done(task_id):
+    tasks=load_tasks()
+    found=False
+    for task in tasks:
+        if task['id']==task_id:
+            task['status']='done'
+            task['updatedAt']=datetime.now().isoformat()
+            found=True
+            break
+    if found:
+        save_tasks(tasks)
+        print(f'Task {task_id} markes as done')
+    else:
+        print(f'Task id {task_id} not found')
+    
+    
+
 
 if __name__== '__main__':
     args=sys.argv
@@ -49,5 +66,14 @@ if __name__== '__main__':
         print('usage: python3 task.py add your description')
       else:
         add_tasks(args[2])
+    elif args[1]=='done':
+        if len(args)<3:
+            print('usage:python3 task.py done task_id')
+        else:
+            try:
+                task_id=int(args[2])
+                mark_task_done(task_id)
+            except ValueError:
+                print('task id mus be a number')
     elif args[1]=='list':
         list_tasks()

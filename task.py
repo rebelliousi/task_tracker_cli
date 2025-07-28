@@ -3,6 +3,7 @@ import json
 import os
 from datetime import datetime
 
+
 TASKS_FILE='tasks.json'
 
 def load_tasks():
@@ -10,22 +11,22 @@ def load_tasks():
         return []
     with open(TASKS_FILE,'r') as f:
         return json.load(f)
-
-def  save_tasks(tasks):
+        
+def save_tasks(tasks):
     with open(TASKS_FILE,'w') as f:
         json.dump(tasks,f,indent=4)
 
-def add_task(description):
+def add_tasks(description):
     tasks=load_tasks()
     task_id=tasks[-1]['id']+1 if tasks else 1
     now=datetime.now().isoformat()
     task={
         'id':task_id,
         'description':description,
-        'status':'todo',
-        'createdAt':now,
-        'updatedAt':now
-    }
+         'status':'todo',
+         'createdAt':now,
+         'updatedAt':now
+         }
     tasks.append(task)
     save_tasks(tasks)
     print(f'Task addded succesfully (ID:{task_id})')
@@ -35,21 +36,57 @@ def list_tasks():
     if not tasks:
         print('no tasks found')
         return
-    for task  in tasks:
-        print(f"id:{task['id']},Description:{task['description']},status{task['status']},createdAt:{task['createdAt']},updatedAt:{task['updatedAt']}")
-    
-if __name__=='__main__':
+    for task in tasks:
+        print(f"id:{task['id']},description:{task['description']},status:{task['status']},createdAt:{task['createdAt']},updatedAt:{task['updatedAt']}")
+        
+        
+        
+        
+
+def  mark_task_done(task_id):
+    tasks=load_tasks()
+    found=False
+    for task in tasks:
+        if task['id']==task_id:
+            task['status']='done'
+            task['updatedAt']=datetime.now().isoformat()
+            found=True
+            break
+        
+        
+        
+    if found:
+            save_tasks(tasks)
+            print(f'Task ID {task_id} marked as done')
+    else:
+            print(f'Task ID {task_id} not found')
+
+
+
+
+
+
+
+if __name__== '__main__':
     args=sys.argv
-    if len(args)<2:
-        print('usage:python task.py commoand ]arguments"')
+    if len(args)<2 :
+        print('usage: command [arguments]')
     elif args[1]=='add':
+      if len(args)<3:
+        print('usage: python3 task.py add your description')
+      else:
+        add_tasks(args[2])
+    elif args[1]=='done':
         if len(args)<3:
-              print('usage:python task.py add "your task descritpion"')  
+           print('usage:python3 task.py done task_id')
         else:
-           add_task(args[2])
+            try:
+                task_id=int(args[2])
+                mark_task_done(task_id)
+            except ValueError:
+                print('task id must be  a number')
+          
     elif args[1]=='list':
         list_tasks()
     else:
         print(f'unknown command {args[1]}')
-        
-print(sys.argv)
