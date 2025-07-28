@@ -64,6 +64,14 @@ def delete_task(task_id):
         save_tasks(new_tasks)
         print(f'task id {task_id } deleted succesfully')
         
+def search_tasks(keyword):
+    tasks=load_tasks()
+    found=[task for task in tasks if keyword.lower() in task['description'].lower()]
+    if not found:
+        print(f'no task found for {keyword}')     
+    else:
+         for task in found:
+             print(f"id:{task['id']},description{task['description']},status:{task['status']},updatedAt:{task['updatedAt']}")
 
 
 if __name__== '__main__':
@@ -94,5 +102,10 @@ if __name__== '__main__':
                 delete_task(task_id)
             except ValueError:
                 print('task id must be a number')
+    elif args[1]=='search':
+        if len(args)<3:
+            print('usage:python3 task.py search keyword')
+        else:
+         search_tasks(args[2])
     elif args[1]=='list':
         list_tasks()
