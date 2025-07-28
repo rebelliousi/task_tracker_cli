@@ -1,19 +1,5 @@
 [
     {
-        "id": 1,
-        "description": "congrate Sara and YBrayyym",
-        "status": "done",
-        "createdAt": "2025-07-26T11:07:02.397651",
-        "updatedAt": "2025-07-28T15:03:31.048204"
-    },
-    {
-        "id": 2,
-        "description": "congrate Sara and YBrayyym",
-        "status": "todo",
-        "createdAt": "2025-07-26T11:14:46.793941",
-        "updatedAt": "2025-07-26T11:14:46.793941"
-    },
-    {
         "id": 3,
         "description": "learn engluusg",
         "status": "todo",

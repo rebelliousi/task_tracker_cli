@@ -54,7 +54,16 @@ def mark_task_done(task_id):
     else:
         print(f'Task id {task_id} not found')
     
-    
+def delete_task(task_id):
+    tasks=load_tasks()
+    new_tasks=[task for task in tasks if task['id']!=task_id]
+    if len(new_tasks)==len(tasks):
+        print(f'task id {task_id} not found')
+        
+    else:
+        save_tasks(new_tasks)
+        print(f'task id {task_id } deleted succesfully')
+        
 
 
 if __name__== '__main__':
@@ -75,5 +84,15 @@ if __name__== '__main__':
                 mark_task_done(task_id)
             except ValueError:
                 print('task id mus be a number')
+                
+    elif args[1]=='delete':
+        if len(args)<3:
+            print('usage:python3 task.py delete task_id')
+        else:
+            try:
+                task_id=int(args[2])
+                delete_task(task_id)
+            except ValueError:
+                print('task id must be a number')
     elif args[1]=='list':
         list_tasks()
