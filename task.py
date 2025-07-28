@@ -82,7 +82,22 @@ def search_tasks(keyword):
         for task in found:
             print(f"id:{task['id']},description:{task['description']},status:{task['status']},createdAt:{task['createdAt']},updatedAt:{task['updatedAt']}") 
 
-
+def edit_task(task_id,new_description):
+    tasks=load_tasks()
+    found=False
+    for task in tasks:
+        if task['id']==task_id:
+            task['description']=new_description
+            task['updateAt']=datetime.now().isoformat()
+            found=True
+            break
+    if found:
+        save_tasks(tasks)
+        print(f'task {task_id} updated succesfully')
+    else:
+        print(f'task id {task_id} not found')
+        
+        
 
 if __name__== '__main__':
     args=sys.argv
@@ -116,8 +131,21 @@ if __name__== '__main__':
             print('usage:python3 task.py search keyword')
         else:
          search_tasks(args[2])
+    elif args[1]=='edit':
+        if len(args)<4:
+            print('usage:python3 task.py edit task_id description')
+            
+        else:
+            try:
+                task_id=int(args[2])
+                new_description=args[3]
+                edit_task(task_id,new_description)
+            except ValueError:
+                print('task id must be a number')
           
     elif args[1]=='list':
         list_tasks()
     else:
         print(f'unknown command {args[1]}')
+        
+    
