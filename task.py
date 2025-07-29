@@ -31,8 +31,10 @@ def add_tasks(description):
     save_tasks(tasks)
     print(f'Task addded succesfully (ID:{task_id})')
     
-def list_tasks():
+def list_tasks(status=None):
     tasks=load_tasks()
+    if status:
+        tasks=[task for task in tasks if task['status']==status]
     if not tasks:
         print('no tasks found')
         return
@@ -157,7 +159,7 @@ if __name__== '__main__':
                 edit_task(task_id,new_description)
             except ValueError:
                 print('task id must be a number')
-    elif args[1]=='mark-in-progress':
+    elif args[1]=='in progress':
         if len(args)<3:
             print('usage: python3 task.py mark-in-progress task_id')
         else:
@@ -168,7 +170,16 @@ if __name__== '__main__':
                 print('task id must be a number')
           
     elif args[1]=='list':
-        list_tasks()
+        if len(args)>=3:
+            status = ' '.join(args[2:]).lower()
+
+            if status in ['todo','done','in progress']:
+                list_tasks(status)
+            else:
+                print('invlaid key.use todo done or in progress')
+        else:
+          list_tasks()
+    
     else:
         print(f'unknown command {args[1]}')
         
