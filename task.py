@@ -96,7 +96,22 @@ def edit_task(task_id,new_description):
         print(f'task {task_id} updated succesfully')
     else:
         print(f'task id {task_id} not found')
-        
+
+def mark_task_in_progress(task_id):
+    tasks=load_tasks()
+    found=False
+    for task in tasks:
+        if task['id']==task_id:
+            task['status']='in progress'
+            task['updatedAt']=datetime.now().isoformat()
+            found=True
+            break
+    
+    if found:
+        save_tasks(tasks)
+        print(f'task id {task_id} marked as in progress')
+    else:
+        print(f'task id {task_id } not  found')        
         
 
 if __name__== '__main__':
@@ -140,6 +155,15 @@ if __name__== '__main__':
                 task_id=int(args[2])
                 new_description=args[3]
                 edit_task(task_id,new_description)
+            except ValueError:
+                print('task id must be a number')
+    elif args[1]=='mark-in-progress':
+        if len(args)<3:
+            print('usage: python3 task.py mark-in-progress task_id')
+        else:
+            try:
+                task_id=int(args[2])
+                mark_task_in_progress(task_id)
             except ValueError:
                 print('task id must be a number')
           
