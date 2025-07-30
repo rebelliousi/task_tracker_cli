@@ -50,7 +50,7 @@ def  mark_task_done(task_id):
     found=False
     for task in tasks:
         if task['id']==task_id:
-            task['status']='done'
+            task['status']='mark-done'
             task['updatedAt']=datetime.now().isoformat()
             found=True
             break
@@ -84,13 +84,13 @@ def search_tasks(keyword):
         for task in found:
             print(f"id:{task['id']},description:{task['description']},status:{task['status']},createdAt:{task['createdAt']},updatedAt:{task['updatedAt']}") 
 
-def edit_task(task_id,new_description):
+def update_task(task_id,new_description):
     tasks=load_tasks()
     found=False
     for task in tasks:
         if task['id']==task_id:
             task['description']=new_description
-            task['updateAt']=datetime.now().isoformat()
+            task['updatedAt']=datetime.now().isoformat()
             found=True
             break
     if found:
@@ -124,10 +124,11 @@ if __name__== '__main__':
       if len(args)<3:
         print('usage: python3 task.py add your description')
       else:
-        add_tasks(args[2])
-    elif args[1]=='done':
+          description=' '.join(args[2:])
+          add_tasks(description)
+    elif args[1]=='mark-done':
         if len(args)<3:
-           print('usage:python3 task.py done task_id')
+           print('usage:python3 task.py mark-done task_id')
         else:
             try:
                 task_id=int(args[2])
@@ -148,18 +149,18 @@ if __name__== '__main__':
             print('usage:python3 task.py search keyword')
         else:
          search_tasks(args[2])
-    elif args[1]=='edit':
+    elif args[1]=='update':
         if len(args)<4:
-            print('usage:python3 task.py edit task_id description')
+            print('usage:python3 task.py update task_id description')
             
         else:
             try:
                 task_id=int(args[2])
-                new_description=args[3]
-                edit_task(task_id,new_description)
+                new_description=' '.join(args[3:])
+                update_task(task_id,new_description)
             except ValueError:
                 print('task id must be a number')
-    elif args[1]=='in progress':
+    elif args[1]=='mark-in-progress':
         if len(args)<3:
             print('usage: python3 task.py mark-in-progress task_id')
         else:
@@ -173,10 +174,10 @@ if __name__== '__main__':
         if len(args)>=3:
             status = ' '.join(args[2:]).lower()
 
-            if status in ['todo','done','in progress']:
+            if status in ['todo','mark-done','mark-in-progress']:
                 list_tasks(status)
             else:
-                print('invlaid key.use todo done or in progress')
+                print('invlaid key.use todo mark-done or mark-in-progress')
         else:
           list_tasks()
     
