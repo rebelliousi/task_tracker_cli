@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Task Tracker</h1>
+    <form id="taskForm">
+        <input type="text" id="title" placeholder="Task's header" required/>
+        <button type="submit">Add</button>
+    </form>
+    <div id="tasks"></div>
+
+
+
+    <script src="{{url_for('static',filename='script.js')}}"></script>
+    
+</body>
+</html>

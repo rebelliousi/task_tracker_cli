@@ -1,4 +1,4 @@
-from flask import Flask,jsonify,request
+from flask import Flask,jsonify,request,render_template
 import json
 import  os
 
@@ -22,7 +22,7 @@ tasks=[]
 @app.route('/')
 
 def home():
-    return  'task tracker backend api'
+    return  render_template('index.html')
 
 @app.route('/tasks',methods=['GET'])
 
